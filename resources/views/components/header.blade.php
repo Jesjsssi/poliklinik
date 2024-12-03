@@ -1,5 +1,9 @@
-<!-- <header class="bg-white shadow">
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+<header class="main_menu">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
 
+            </div>
+        </div>
     </div>
-</header> -->
+</header>
