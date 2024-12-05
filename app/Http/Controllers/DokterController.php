@@ -17,4 +17,10 @@ class DokterController extends Controller
         // Jika bukan dokter, arahkan ke halaman yang sesuai atau login
         return redirect()->route('auth.login');
     }
+
+    public function jadwalPeriksa()
+    {
+        // Your logic to display the schedule
+        return view('dokter.jadwal');
+    }
 }
