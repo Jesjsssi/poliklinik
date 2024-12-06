@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('public/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    <title>Jadwal Pemeriksaan Dokter</title>
+    <title>Pemeriksaan Dokter</title>
 </head>
 
 <body class="bg-white text-black">
@@ -40,13 +40,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Loop untuk menampilkan data dari jadwal_periksas -->
-                        @foreach($jadwalPeriksas as $jadwal)
+                        @foreach($periksas as $periksa)
                             <tr class="bg-gray-100 hover:bg-gray-200">
-                                <td class="px-4 py-2">{{ $jadwal->dokter ? $jadwal->dokter->nama : 'Dokter tidak ditemukan' }}</td>
-                                <td class="px-4 py-2">{{ $jadwal->hari }}</td>
-                                <td class="px-4 py-2">{{ $jadwal->jam_mulai }}</td>
-                                <td class="px-4 py-2">{{ $jadwal->jam_selesai }}</td>
+                                <td class="px-4 py-2">{{ $periksa->daftarPoli->dokter->nama ?? 'Dokter tidak ditemukan' }}
+                                </td>
+                                <td class="px-4 py-2">{{ $periksa->daftarPoli->hari }}</td>
+                                <td class="px-4 py-2">{{ $periksa->daftarPoli->jam_mulai }}</td>
+                                <td class="px-4 py-2">{{ $periksa->daftarPoli->jam_selesai }}</td>
                                 <td class="px-4 py-2 flex gap-2">
                                     <button class="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700">Edit</button>
                                     <!-- <button class="bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700">Hapus</button> -->

@@ -10,7 +10,7 @@ class CheckRole
     public function handle(Request $request, Closure $next, $role)
     {
         if (!Auth::check() || Auth::user()->role !== $role) {
-            return response()->view('errors.403', [], 403);
+            return response()->view('auth.403', [], 403);
         }
 
         return $next($request);

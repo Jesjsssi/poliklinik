@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\JadwalPeriksa;
+use App\Models\Periksa;
 
 class DokterController extends Controller
 {
@@ -20,7 +22,17 @@ class DokterController extends Controller
 
     public function jadwalPeriksa()
     {
-        // Your logic to display the schedule
-        return view('dokter.jadwal');
+        $jadwalPeriksas = JadwalPeriksa::with('dokter')->get();
+        return view('dokter.jadwal', compact('jadwalPeriksas'));
+    }
+
+    // Fungsi untuk menampilkan jadwal pemeriksaan
+    public function periksaPasien()
+    {
+        // Mengambil data pemeriksaan dari tabel periksas beserta informasi dokter dan daftar poli
+        $jadwalPeriksas = Periksa::with('daftarPoli.dokter')->get();
+
+        // Mengirim data ke view
+        return view('dokter.periksa', compact('jadwalPeriksas'));
     }
 }

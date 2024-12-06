@@ -10,9 +10,7 @@
 </head>
 
 <body>
-    @extends('layouts.dashboard_layout')
-
-    @section('title', 'Dokter Dashboard')
+    
 
     <x-sidebar></x-sidebar>
 
