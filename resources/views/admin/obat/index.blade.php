@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('public/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    <title>Daftar Poli</title>
+    <title>Daftar Obat</title>
 </head>
 
 <body class="bg-white text-black">
@@ -17,9 +17,9 @@
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-2xl font-bold">Daftar Poli</h1>
-                <a href="{{ route('admin.poli.create') }}"
-                    class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Tambah Poli</a>
+                <h1 class="text-2xl font-bold">Daftar Obat</h1>
+                <a href="{{ route('admin.obat.create') }}"
+                    class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Tambah Obat</a>
             </div>
 
             @if(session('success'))
@@ -33,21 +33,24 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-4 py-2 text-left border border-gray-300">No</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Nama Poli</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Keterangan</th>
+                            <th class="px-4 py-2 text-left border border-gray-300">Nama Obat</th>
+                            <th class="px-4 py-2 text-left border border-gray-300">Kemasan</th>
+                            <th class="px-4 py-2 text-left border border-gray-300">Harga</th>
                             <th class="px-4 py-2 text-left border border-gray-300">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($polis as $poli)
+                        @foreach ($obats as $obat)
                             <tr class="hover:bg-gray-100">
                                 <td class="px-4 py-2 border border-gray-300">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $poli->nama_poli }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $poli->keterangan }}</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $obat->nama_obat }}</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $obat->kemasan }}</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ number_format($obat->harga, 0, ',', '.') }}
+                                </td>
                                 <td class="px-4 py-2 flex gap-2">
-                                    <a href="{{ route('admin.poli.edit', $poli->id) }}"
+                                    <a href="{{ route('admin.obat.edit', $obat->id) }}"
                                         class="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700">Edit</a>
-                                    <form action="{{ route('admin.poli.destroy', $poli->id) }}" method="POST"
+                                    <form action="{{ route('admin.obat.destroy', $obat->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')

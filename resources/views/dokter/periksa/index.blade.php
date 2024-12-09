@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('public/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    <title>Daftar Poli</title>
+    <title>Daftar Periksa</title>
 </head>
 
 <body class="bg-white text-black">
@@ -17,9 +17,9 @@
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-2xl font-bold">Daftar Poli</h1>
-                <a href="{{ route('admin.poli.create') }}"
-                    class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Tambah Poli</a>
+                <h1 class="text-2xl font-bold">Daftar Periksa</h1>
+                <a href="{{ route('dokter.periksa.create') }}"
+                    class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Tambah Periksa</a>
             </div>
 
             @if(session('success'))
@@ -33,21 +33,23 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="px-4 py-2 text-left border border-gray-300">No</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Nama Poli</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Keterangan</th>
+                            <th class="px-4 py-2 text-left border border-gray-300">Tanggal Periksa</th>
+                            <th class="px-4 py-2 text-left border border-gray-300">Poli</th>
+                            <th class="px-4 py-2 text-left border border-gray-300">Biaya</th>
                             <th class="px-4 py-2 text-left border border-gray-300">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($polis as $poli)
+                        @foreach ($periksas as $periksa)
                             <tr class="hover:bg-gray-100">
                                 <td class="px-4 py-2 border border-gray-300">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $poli->nama_poli }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $poli->keterangan }}</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $periksa->tgl_periksa }}</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $periksa->daftarPoli->nama_poli }}</td>
+                                <td class="px-4 py-2 border border-gray-300">{{ $periksa->biaya_periksa }}</td>
                                 <td class="px-4 py-2 flex gap-2">
-                                    <a href="{{ route('admin.poli.edit', $poli->id) }}"
+                                    <a href="{{ route('dokter.periksa.edit', $periksa->id) }}"
                                         class="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700">Edit</a>
-                                    <form action="{{ route('admin.poli.destroy', $poli->id) }}" method="POST"
+                                    <form action="{{ route('dokter.periksa.destroy', $periksa->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')

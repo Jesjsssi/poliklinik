@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\JadwalPeriksa;
 use App\Models\Dokter;
+use App\Models\JadwalPeriksa;
+use Illuminate\Database\Seeder;
 
 class JadwalPeriksaSeeder extends Seeder
 {
@@ -12,22 +12,26 @@ class JadwalPeriksaSeeder extends Seeder
     {
         $dokters = Dokter::all();
 
-        if ($dokters->isNotEmpty()) {
-            foreach ($dokters as $dokter) {
-                JadwalPeriksa::create([
-                    'dokter_id' => $dokter->id,
-                    'hari' => 'Senin',
-                    'jam_mulai' => '08:00:00',
-                    'jam_selesai' => '12:00:00',
-                ]);
-
-                JadwalPeriksa::create([
-                    'dokter_id' => $dokter->id,
-                    'hari' => 'Selasa',
-                    'jam_mulai' => '09:00:00',
-                    'jam_selesai' => '13:00:00',
-                ]);
-            }
+        foreach ($dokters as $dokter) {
+            // Menambahkan beberapa jadwal per dokter
+            JadwalPeriksa::create([
+                'id_dokter' => $dokter->id,
+                'hari' => 'Senin',
+                'jam_mulai' => '08:00',
+                'jam_selesai' => '12:00',
+            ]);
+            JadwalPeriksa::create([
+                'id_dokter' => $dokter->id,
+                'hari' => 'Rabu',
+                'jam_mulai' => '13:00',
+                'jam_selesai' => '17:00',
+            ]);
+            JadwalPeriksa::create([
+                'id_dokter' => $dokter->id,
+                'hari' => 'Jumat',
+                'jam_mulai' => '08:00',
+                'jam_selesai' => '12:00',
+            ]);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\JadwalPeriksa;
+use App\Models\Dokter;
 use App\Models\Periksa;
 
 class DokterController extends Controller
@@ -20,19 +21,113 @@ class DokterController extends Controller
         return redirect()->route('auth.login');
     }
 
-    public function jadwalPeriksa()
+    // Menampilkan jadwal periksa
+    public function jadwalIndex()
     {
-        $jadwalPeriksas = JadwalPeriksa::with('dokter')->get();
-        return view('dokter.jadwal', compact('jadwalPeriksas'));
+        $jadwalPeriksas = JadwalPeriksa::all(); // Mengambil semua data jadwal
+        return view('dokter.jadwal.index', compact('jadwalPeriksas'));
     }
 
-    // Fungsi untuk menampilkan jadwal pemeriksaan
-    public function periksaPasien()
+    public function createJadwal()
     {
-        // Mengambil data pemeriksaan dari tabel periksas beserta informasi dokter dan daftar poli
-        $jadwalPeriksas = Periksa::with('daftarPoli.dokter')->get();
+        $dokters = Dokter::all();
+        return view('dokter.jadwal.create', compact('dokters'));
+    }
 
-        // Mengirim data ke view
-        return view('dokter.periksa', compact('jadwalPeriksas'));
+    public function storeJadwal(Request $request)
+    {
+        $request->validate([
+            'id_dokter' => 'required',
+            'hari' => 'required',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+        ]);
+
+        JadwalPeriksa::create($request->all());
+
+        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal Dokter berhasil ditambahkan.');
+    }
+
+    public function editJadwal($id)
+    {
+        $jadwalPeriksa = JadwalPeriksa::findOrFail($id); // Mengambil data berdasarkan ID
+        $dokters = Dokter::all(); // Mengambil data dokter
+        return view('dokter.jadwal.edit', compact('jadwalPeriksa', 'dokters'));
+    }
+
+    public function updateJadwal(Request $request, $id)
+    {
+        $request->validate([
+            'id_dokter' => 'required',
+            'hari' => 'required',
+            'jam_mulai' => 'required',
+            'jam_selesai' => 'required',
+        ]);
+
+        $jadwal = JadwalPeriksa::findOrFail($id);
+        $jadwal->update($request->all());
+
+        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal Dokter berhasil diperbarui.');
+    }
+
+    public function deleteJadwal($id)
+    {
+        $jadwal = JadwalPeriksa::findOrFail($id);
+        $jadwal->delete();
+
+        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal Dokter berhasil dihapus.');
+    }
+
+    public function periksaIndex()
+    {
+        $periksas = Periksa::with('daftarPoli')->get();
+        return view('dokter.periksa.index', compact('periksas'));
+    }
+
+    public function createPeriksa()
+    {
+        $daftarPolis = DaftarPoli::all();
+        return view('dokter.periksa.create', compact('daftarPolis'));
+    }
+
+    public function storePeriksa(Request $request)
+    {
+        $request->validate([
+            'id_daftar_poli' => 'required|exists:daftar_polis,id',
+            'tgl_periksa' => 'required|date',
+            'catatan' => 'nullable|string',
+            'biaya_periksa' => 'required|integer',
+        ]);
+
+        Periksa::create($request->all());
+        return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil ditambahkan.');
+    }
+
+    public function editPeriksa($id)
+    {
+        $periksa = Periksa::findOrFail($id);
+        $daftarPolis = DaftarPoli::all();
+        return view('dokter.periksa.edit', compact('periksa', 'daftarPolis'));
+    }
+
+    public function updatePeriksa(Request $request, $id)
+    {
+        $request->validate([
+            'id_daftar_poli' => 'required|exists:daftar_polis,id',
+            'tgl_periksa' => 'required|date',
+            'catatan' => 'nullable|string',
+            'biaya_periksa' => 'required|integer',
+        ]);
+
+        $periksa = Periksa::findOrFail($id);
+        $periksa->update($request->all());
+        return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil diperbarui.');
+    }
+
+    public function deletePeriksa($id)
+    {
+        $periksa = Periksa::findOrFail($id);
+        $periksa->delete();
+        return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil dihapus.');
     }
 }

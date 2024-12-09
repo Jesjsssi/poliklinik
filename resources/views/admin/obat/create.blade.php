@@ -6,58 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('public/css/app.css')
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
-    <title>Tambah Dokter</title>
+    <title>Tambah Obat</title>
 </head>
 
 <body class="bg-white text-black">
 
     <div class="flex">
-
         <!-- Sidebar -->
         <x-sidebar></x-sidebar>
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-2xl font-bold">Tambah Dokter</h1>
+                <h1 class="text-2xl font-bold">Tambah Obat</h1>
             </div>
 
-            <form action="{{ route('admin.dokter.store') }}" method="POST" class="bg-gray-100 p-6 rounded-lg">
+            <form action="{{ route('admin.obat.store') }}" method="POST" class="bg-gray-100 p-6 rounded-lg">
                 @csrf
                 <div class="mb-4">
-                    <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
-                    <input type="text" id="nama" name="nama"
+                    <label for="nama_obat" class="block text-sm font-medium text-gray-700">Nama Obat</label>
+                    <input type="text" id="nama_obat" name="nama_obat"
                         class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
-                        required>
+                        value="{{ old('nama_obat') }}" required>
+                    @error('nama_obat')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
-                    <textarea id="alamat" name="alamat" rows="3"
+                    <label for="kemasan" class="block text-sm font-medium text-gray-700">Kemasan</label>
+                    <input type="text" id="kemasan" name="kemasan"
                         class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
-                        required></textarea>
+                        value="{{ old('kemasan') }}" required>
+                    @error('kemasan')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="no_hp" class="block text-sm font-medium text-gray-700">No HP</label>
-                    <input type="text" id="no_hp" name="no_hp"
+                    <label for="harga" class="block text-sm font-medium text-gray-700">Harga</label>
+                    <input type="number" id="harga" name="harga"
                         class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
-                        required>
-                </div>
-
-                <div class="mb-4">
-                    <label for="id_poli" class="block text-sm font-medium text-gray-700">Poli</label>
-                    <select id="id_poli" name="id_poli"
-                        class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
-                        required>
-                        <option value="" disabled selected>Pilih Poli</option>
-                        @foreach($polis as $poli)
-                            <option value="{{ $poli->id }}">{{ $poli->nama_poli }}</option>
-                        @endforeach
-                    </select>
+                        value="{{ old('harga') }}" required>
+                    @error('harga')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="flex justify-end gap-4">
-                    <a href="{{ route('admin.dokter.index') }}"
+                    <a href="{{ route('admin.obat.index') }}"
                         class="bg-gray-500 px-4 py-2 rounded text-white hover:bg-gray-600">Kembali</a>
                     <button type="submit"
                         class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Simpan</button>

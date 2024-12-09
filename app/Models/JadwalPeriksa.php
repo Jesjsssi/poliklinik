@@ -1,5 +1,5 @@
 <?php
-// app/Models/JadwalPeriksa.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,15 +9,16 @@ class JadwalPeriksa extends Model
 {
     use HasFactory;
 
+    protected $table = 'jadwal_periksas'; // Pastikan nama tabel sesuai dengan migrasi
     protected $fillable = [
-        'dokter_id',
         'hari',
         'jam_mulai',
-        'jam_selesai'
+        'jam_selesai',
+        'id_dokter',
     ];
 
     public function dokter()
     {
-        return $this->belongsTo(Dokter::class);
+        return $this->belongsTo(Dokter::class, 'id_dokter');
     }
 }
