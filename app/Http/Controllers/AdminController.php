@@ -188,7 +188,7 @@ class AdminController extends Controller
         return redirect()->route('admin.pasien.index')->with('success', 'Pasien berhasil dihapus');
     }
 
-    //admin poli
+    
     // Show the list of all Poli
     public function obatIndex()
     {

@@ -9,7 +9,7 @@
     <title>Daftar Periksa</title>
 </head>
 
-<body class="bg-white text-black">
+<body class="bg-gray-50 text-gray-900">
 
     <div class="flex">
         <!-- Sidebar -->
@@ -32,20 +32,22 @@
                 <table class="table-auto w-full border-collapse border border-gray-300">
                     <thead class="bg-gray-100">
                         <tr>
-                            <th class="px-4 py-2 text-left border border-gray-300">No</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Tanggal Periksa</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Poli</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Biaya</th>
-                            <th class="px-4 py-2 text-left border border-gray-300">Aksi</th>
+                            <th class="px-4 py-2 border">No</th>
+                            <th class="px-4 py-2 border">Tanggal Periksa</th>
+                            <th class="px-4 py-2 border">Poli</th>
+                            <th class="px-4 py-2 border">Biaya</th>
+                            <th class="px-4 py-2 border">Catatan</th>
+                            <th class="px-4 py-2 border">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($periksas as $periksa)
                             <tr class="hover:bg-gray-100">
-                                <td class="px-4 py-2 border border-gray-300">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $periksa->tgl_periksa }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $periksa->daftarPoli->nama_poli }}</td>
-                                <td class="px-4 py-2 border border-gray-300">{{ $periksa->biaya_periksa }}</td>
+                                <td class="px-4 py-2 border">{{ $loop->iteration }}</td>
+                                <td class="px-4 py-2 border">{{ $periksa->tgl_periksa }}</td>
+                                <td class="px-4 py-2 border">{{ $periksa->daftarPoli->nama_poli }}</td>
+                                <td class="px-4 py-2 border">{{ $periksa->biaya_periksa }}</td>
+                                <td class="px-4 py-2 border">{{ $periksa->catatan }}</td>
                                 <td class="px-4 py-2 flex gap-2">
                                     <a href="{{ route('dokter.periksa.edit', $periksa->id) }}"
                                         class="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700">Edit</a>
@@ -66,7 +68,7 @@
         </div>
     </div>
 
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite/dist/flowbite.min.js"></script>
 </body>
 
 </html>

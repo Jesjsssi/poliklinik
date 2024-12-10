@@ -9,7 +9,7 @@
     <title>Tambah Periksa</title>
 </head>
 
-<body class="bg-white text-black">
+<body class="bg-gray-50 text-gray-900">
 
     <div class="flex">
         <!-- Sidebar -->
@@ -18,39 +18,39 @@
         <div class="flex-1 p-6 ml-64 mt-12">
             <h1 class="text-2xl font-bold mb-4">Tambah Periksa</h1>
 
-            <form action="{{ route('dokter.periksa.store') }}" method="POST">
+            <form action="{{ route('dokter.periksa.store') }}" method="POST" class="bg-white p-6 rounded shadow">
                 @csrf
-                <div class="space-y-4">
-                    <div>
-                        <label for="id_daftar_poli" class="block font-medium">Poli</label>
-                        <select id="id_daftar_poli" name="id_daftar_poli" class="w-full px-4 py-2 rounded-md border"
-                            required>
-                            @foreach ($daftarPolis as $poli)
-                                <option value="{{ $poli->id }}">{{ $poli->nama_poli }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label for="tgl_periksa" class="block font-medium">Tanggal Periksa</label>
-                        <input type="datetime-local" id="tgl_periksa" name="tgl_periksa" class="w-full px-4 py-2 rounded-md border"
-                            required />
-                    </div>
-                    <div>
-                        <label for="catatan" class="block font-medium">Catatan</label>
-                        <textarea id="catatan" name="catatan" class="w-full px-4 py-2 rounded-md border"></textarea>
-                    </div>
-                    <div>
-                        <label for="biaya_periksa" class="block font-medium">Biaya Periksa</label>
-                        <input type="number" id="biaya_periksa" name="biaya_periksa" class="w-full px-4 py-2 rounded-md border"
-                            required />
-                    </div>
+
+                <div class="mb-4">
+                    <label for="id_daftar_poli" class="block font-medium">Poli</label>
+                    <select name="id_daftar_poli" id="id_daftar_poli" class="w-full border-gray-300 rounded p-2">
+                        @foreach ($daftarPolis as $poli)
+                            <option value="{{ $poli->id }}">{{ $poli->nama_poli }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <button type="submit" class="mt-4 bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Simpan</button>
+
+                <div class="mb-4">
+                    <label for="tgl_periksa" class="block font-medium">Tanggal Periksa</label>
+                    <input type="datetime-local" name="tgl_periksa" id="tgl_periksa" class="w-full border-gray-300 rounded p-2">
+                </div>
+
+                <div class="mb-4">
+                    <label for="biaya_periksa" class="block font-medium">Biaya Periksa</label>
+                    <input type="number" name="biaya_periksa" id="biaya_periksa" class="w-full border-gray-300 rounded p-2">
+                </div>
+
+                <div class="mb-4">
+                    <label for="catatan" class="block font-medium">Catatan</label>
+                    <textarea name="catatan" id="catatan" rows="3" class="w-full border-gray-300 rounded p-2"></textarea>
+                </div>
+
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>
             </form>
         </div>
     </div>
 
-    <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite/dist/flowbite.min.js"></script>
 </body>
 
 </html>

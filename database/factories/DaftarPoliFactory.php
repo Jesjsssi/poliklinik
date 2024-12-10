@@ -3,27 +3,21 @@
 namespace Database\Factories;
 
 use App\Models\DaftarPoli;
+use App\Models\Pasien;
+use App\Models\JadwalPeriksa;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DaftarPoliFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = DaftarPoli::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            'nama_poli' => $this->faker->word, // Nama Poli
-            'keterangan' => $this->faker->sentence, // Keterangan
+            'id_pasien' => Pasien::factory(),
+            'id_jadwal' => JadwalPeriksa::factory(),
+            'keluhan' => $this->faker->sentence,
+            'no_antrian' => $this->faker->unique()->numberBetween(1, 100),
         ];
     }
 }

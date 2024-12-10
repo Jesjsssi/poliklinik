@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\JadwalPeriksa;
 use App\Models\Dokter;
 use App\Models\Periksa;
+use App\Models\DaftarPoli;
 
 class DokterController extends Controller
 {
@@ -84,50 +85,60 @@ class DokterController extends Controller
         return view('dokter.periksa.index', compact('periksas'));
     }
 
+    // Menampilkan form tambah periksa
     public function createPeriksa()
     {
         $daftarPolis = DaftarPoli::all();
         return view('dokter.periksa.create', compact('daftarPolis'));
     }
 
+    // Menyimpan data periksa
     public function storePeriksa(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'id_daftar_poli' => 'required|exists:daftar_polis,id',
             'tgl_periksa' => 'required|date',
             'catatan' => 'nullable|string',
-            'biaya_periksa' => 'required|integer',
+            'biaya_periksa' => 'required|integer|min:0',
         ]);
 
-        Periksa::create($request->all());
+        Periksa::create($validated);
+
         return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil ditambahkan.');
     }
 
+    // Menampilkan form edit periksa
     public function editPeriksa($id)
     {
         $periksa = Periksa::findOrFail($id);
         $daftarPolis = DaftarPoli::all();
+
         return view('dokter.periksa.edit', compact('periksa', 'daftarPolis'));
     }
 
+    // Memperbarui data periksa
     public function updatePeriksa(Request $request, $id)
     {
-        $request->validate([
+        $periksa = Periksa::findOrFail($id);
+
+        $validated = $request->validate([
             'id_daftar_poli' => 'required|exists:daftar_polis,id',
             'tgl_periksa' => 'required|date',
             'catatan' => 'nullable|string',
-            'biaya_periksa' => 'required|integer',
+            'biaya_periksa' => 'required|integer|min:0',
         ]);
 
-        $periksa = Periksa::findOrFail($id);
-        $periksa->update($request->all());
+        $periksa->update($validated);
+
         return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil diperbarui.');
     }
 
+    // Menghapus data periksa
     public function deletePeriksa($id)
     {
         $periksa = Periksa::findOrFail($id);
         $periksa->delete();
+
         return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil dihapus.');
     }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\PasienController;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\AuthenticateAndRedirect;
 use App\Http\Controllers\PoliController;
+use App\Http\Controllers\DaftarPoliController;
+
 
 
 
@@ -118,4 +120,10 @@ Route::get('/dokter/periksa/{id}/edit', [DokterController::class, 'editPeriksa']
 Route::post('/dokter/periksa/{id}/update', [DokterController::class, 'updatePeriksa'])->name('dokter.periksa.update');
 Route::delete('/dokter/periksa/{id}', [DokterController::class, 'deletePeriksa'])->name('dokter.periksa.destroy');
 
-
+//Pasien Poli
+Route::get('/pasien/poli', [DaftarPoliController::class, 'index'])->name('pasien.poli.index');
+Route::get('/pasien/poli/create', [DaftarPoliController::class, 'create'])->name('pasien.poli.create');
+Route::post('/pasien/poli', [DaftarPoliController::class, 'store'])->name('pasien.poli.store');
+Route::get('/pasien/poli/{id}/edit', [DaftarPoliController::class, 'edit'])->name('pasien.poli.edit');
+Route::post('/pasien/poli/{id}/update', [DaftarPoliController::class, 'update'])->name('pasien.poli.update');
+Route::delete('/pasien/poli/{id}', [DaftarPoliController::class, 'destroy'])->name('pasien.poli.destroy');
