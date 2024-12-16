@@ -8,6 +8,7 @@ use App\Models\JadwalPeriksa;
 use App\Models\Dokter;
 use App\Models\Periksa;
 use App\Models\DaftarPoli;
+use App\Models\Poli;
 
 class DokterController extends Controller
 {
@@ -81,56 +82,65 @@ class DokterController extends Controller
 
     public function periksaIndex()
     {
-        $periksas = Periksa::with('daftarPoli')->get();
+        $periksas = Periksa::with('daftarPoli.poli')->get(); // Eager load relasi
+
         return view('dokter.periksa.index', compact('periksas'));
     }
 
-    // Menampilkan form tambah periksa
+    // Menampilkan form untuk membuat periksa baru
     public function createPeriksa()
     {
-        $daftarPolis = DaftarPoli::all();
-        return view('dokter.periksa.create', compact('daftarPolis'));
+        $polis = Poli::all(); // Ambil data poli
+        return view('dokter.periksa.create', compact('polis'));
     }
 
-    // Menyimpan data periksa
+    // Menyimpan periksa yang baru dibuat
     public function storePeriksa(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'id_daftar_poli' => 'required|exists:daftar_polis,id',
             'tgl_periksa' => 'required|date',
+            'biaya_periksa' => 'required|numeric',
             'catatan' => 'nullable|string',
-            'biaya_periksa' => 'required|integer|min:0',
         ]);
 
-        Periksa::create($validated);
+        Periksa::create([
+            'id_daftar_poli' => $request->id_daftar_poli,
+            'tgl_periksa' => $request->tgl_periksa,
+            'biaya_periksa' => $request->biaya_periksa,
+            'catatan' => $request->catatan,
+        ]);
 
-        return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil ditambahkan.');
+        return redirect()->route('dokter.periksa.index');
     }
 
-    // Menampilkan form edit periksa
+    // Menampilkan form untuk mengedit data periksa
     public function editPeriksa($id)
     {
         $periksa = Periksa::findOrFail($id);
-        $daftarPolis = DaftarPoli::all();
-
-        return view('dokter.periksa.edit', compact('periksa', 'daftarPolis'));
+        $polis = Poli::all();
+        return view('dokter.periksa.edit', compact('periksa', 'polis'));
     }
 
-    // Memperbarui data periksa
+    // Menyimpan perubahan data periksa
     public function updatePeriksa(Request $request, $id)
     {
-        $periksa = Periksa::findOrFail($id);
-
-        $validated = $request->validate([
+        $request->validate([
             'id_daftar_poli' => 'required|exists:daftar_polis,id',
             'tgl_periksa' => 'required|date',
+            'biaya_periksa' => 'required|numeric',
             'catatan' => 'nullable|string',
-            'biaya_periksa' => 'required|integer|min:0',
         ]);
 
-        $periksa->update($validated);
+        $periksa = Periksa::findOrFail($id);
+        $periksa->update([
+            'id_daftar_poli' => $request->id_daftar_poli,
+            'tgl_periksa' => $request->tgl_periksa,
+            'biaya_periksa' => $request->biaya_periksa,
+            'catatan' => $request->catatan,
+        ]);
 
-        return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil diperbarui.');
+        return redirect()->route('dokter.periksa.index');
     }
 
     // Menghapus data periksa
@@ -139,6 +149,6 @@ class DokterController extends Controller
         $periksa = Periksa::findOrFail($id);
         $periksa->delete();
 
-        return redirect()->route('dokter.periksa.index')->with('success', 'Data periksa berhasil dihapus.');
+        return redirect()->route('dokter.periksa.index');
     }
 }

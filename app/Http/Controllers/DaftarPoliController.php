@@ -6,27 +6,25 @@ use App\Models\DaftarPoli;
 use App\Models\Pasien;
 use App\Models\JadwalPeriksa;
 use Illuminate\Http\Request;
+use App\Models\Poli;
+
 
 class DaftarPoliController extends Controller
 {
-    /**
-     * Menampilkan daftar pasien yang terdaftar di poli
-     */
     public function index()
     {
-        // Ambil semua data pasien yang sudah terdaftar
-        $daftarPolis = DaftarPoli::with('pasien', 'jadwal')->get(); // Ambil data poli dengan relasi pasien dan jadwal
+        // Ambil data daftar poli dengan relasi pasien, jadwal, dan poli
+        $daftarPolis = DaftarPoli::with(['pasien', 'jadwal.dokter', 'poli'])->get();
 
-        // Ambil data pasien dan jadwal untuk ditampilkan di form pendaftaran
+        // Data tambahan untuk form pendaftaran
         $pasiens = Pasien::all();
-        $jadwals = JadwalPeriksa::all();
+        $jadwals = JadwalPeriksa::with('dokter')->get();
+        $polis = Poli::all();
 
-        return view('pasien.poli.index', compact('daftarPolis', 'pasiens', 'jadwals'));
+        return view('pasien.poli.index', compact('daftarPolis', 'pasiens', 'jadwals', 'polis'));
     }
 
-    /**
-     * Menampilkan form untuk membuat daftar poli baru
-     */
+
     public function create()
     {
         // Ambil data pasien dan jadwal untuk ditampilkan di form
@@ -40,18 +38,46 @@ class DaftarPoliController extends Controller
     public function store(Request $request)
     {
         // Validasi input
-        $validated = $request->validate([
+        $request->validate([
             'id_pasien' => 'required|exists:pasiens,id',
             'id_jadwal' => 'required|exists:jadwal_periksas,id',
-            'keluhan' => 'required|string',
-            'no_antrian' => 'required|integer',
+            'keluhan' => 'required|string|max:255',
         ]);
 
-        // Simpan data daftar poli
-        DaftarPoli::create($validated);
+        // Cari Poli berdasarkan Jadwal
+        $jadwal = JadwalPeriksa::with('dokter.poli')->find($request->id_jadwal);
+        $idPoli = optional($jadwal->dokter->poli)->id;
 
-        return redirect()->route('pasien.poli.index')->with('success', 'Pasien berhasil didaftarkan.');
+        if (!$idPoli) {
+            return back()->withErrors('Poli tidak ditemukan untuk dokter pada jadwal ini.');
+        }
+
+        // Hitung nomor antrian terakhir berdasarkan jadwal
+        $lastAntrian = DaftarPoli::where('id_jadwal', $request->id_jadwal)->max('no_antrian');
+
+        // Jika belum ada antrian, setel menjadi 1, jika sudah, tambahkan 1
+        $newAntrian = $lastAntrian ? $lastAntrian + 1 : 1;
+
+        // Simpan data
+        DaftarPoli::create([
+            'id_pasien' => $request->id_pasien,
+            'id_jadwal' => $request->id_jadwal,
+            'id_poli' => $idPoli,
+            'keluhan' => $request->keluhan,
+            'no_antrian' => $newAntrian,
+        ]);
+
+        return redirect()->route('pasien.poli.index')->with('success', 'Pendaftaran berhasil. Nomor antrian Anda: ' . $newAntrian);
     }
+
+    public function show($id)
+    {
+        $daftarPoli = DaftarPoli::with('poli', 'jadwal.dokter')->findOrFail($id);
+        return response()->json($daftarPoli);
+    }
+
+
+
 
     /**
      * Menampilkan form untuk mengedit daftar poli

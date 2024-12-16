@@ -10,10 +10,9 @@
 </head>
 
 <body class="bg-white text-black">
-
+    @extends('layouts.dashboard_layout')
     <div class="flex">
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
+
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <h1 class="text-2xl font-bold mb-4">Tambah Daftar Poli</h1>
@@ -33,10 +32,14 @@
                     <label for="id_jadwal" class="block">Jadwal Periksa</label>
                     <select name="id_jadwal" id="id_jadwal" class="w-full p-2 border border-gray-300">
                         @foreach ($jadwals as $jadwal)
-                            <option value="{{ $jadwal->id }}">{{ $jadwal->tgl_periksa }}</option>
+                            <option value="{{ $jadwal->id }}">
+                                {{ $jadwal->hari }} - {{ $jadwal->jam_mulai }} to {{ $jadwal->jam_selesai }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
+
+
 
                 <div class="mb-4">
                     <label for="keluhan" class="block">Keluhan</label>

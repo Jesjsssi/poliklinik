@@ -19,8 +19,14 @@ class JadwalPeriksa extends Model
 
     public function dokter()
     {
-        return $this->belongsTo(Dokter::class, 'id_dokter');
+        return $this->belongsTo(Dokter::class, 'id_dokter', 'id');
     }
+
+    public function poli()
+    {
+        return $this->dokter->poli(); // Poli diambil dari relasi dokter
+    }
+
 
     public function daftarPolis()
     {

@@ -19,6 +19,7 @@ class Dokter extends Model
 
     public function poli()
     {
-        return $this->belongsTo(Poli::class, 'id_poli');
+        return $this->belongsTo(Poli::class, 'id_poli', 'id'); // Dokter terkait Poli
     }
+
 }

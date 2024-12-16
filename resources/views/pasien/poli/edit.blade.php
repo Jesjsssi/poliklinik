@@ -11,9 +11,10 @@
 
 <body class="bg-white text-black">
 
+@extends('layouts.dashboard_layout')
+
      <div class="flex">
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
+        
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <h1 class="text-2xl font-bold mb-4">Edit Daftar Poli</h1>
@@ -60,6 +61,7 @@
     </div>
 
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+    
 </body>
 
 </html>

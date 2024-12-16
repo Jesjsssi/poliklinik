@@ -21,12 +21,11 @@
             <form action="{{ route('dokter.periksa.update', $periksa->id) }}" method="POST">
                 @csrf
                 @method('POST')
-
                 <div class="mb-4">
-                    <label for="id_daftar_poli" class="block mb-2">Poli</label>
-                    <select name="id_daftar_poli" id="id_daftar_poli" class="w-full px-4 py-2 border rounded">
-                        @foreach($daftarPolis as $poli)
-                            <option value="{{ $poli->id }}" {{ $periksa->id_daftar_poli == $poli->id ? 'selected' : '' }}>
+                    <label for="id_daftar_poli" class="block text-sm font-medium text-gray-700">Poli</label>
+                    <select name="id_daftar_poli" id="id_daftar_poli" class="block w-full mt-1">
+                        @foreach ($polis as $poli)
+                            <option value="{{ $poli->id }}" @selected($periksa->daftarPoli->id_poli == $poli->id)>
                                 {{ $poli->nama_poli }}
                             </option>
                         @endforeach
@@ -34,24 +33,23 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="tgl_periksa" class="block mb-2">Tanggal Periksa</label>
-                    <input type="datetime-local" name="tgl_periksa" id="tgl_periksa"
-                        class="w-full px-4 py-2 border rounded" value="{{ $periksa->tgl_periksa }}">
+                    <label for="tgl_periksa" class="block text-sm font-medium text-gray-700">Tanggal Periksa</label>
+                    <input type="date" name="tgl_periksa" id="tgl_periksa" value="{{ $periksa->tgl_periksa }}"
+                        class="block w-full mt-1">
                 </div>
 
                 <div class="mb-4">
-                    <label for="biaya_periksa" class="block mb-2">Biaya Periksa</label>
-                    <input type="number" name="biaya_periksa" id="biaya_periksa" class="w-full px-4 py-2 border rounded"
-                        value="{{ $periksa->biaya_periksa }}">
+                    <label for="biaya_periksa" class="block text-sm font-medium text-gray-700">Biaya Periksa</label>
+                    <input type="text" name="biaya_periksa" id="biaya_periksa" value="{{ $periksa->biaya_periksa }}"
+                        class="block w-full mt-1">
                 </div>
 
                 <div class="mb-4">
-                    <label for="catatan" class="block mb-2">Catatan</label>
-                    <textarea name="catatan" id="catatan" rows="3"
-                        class="w-full px-4 py-2 border rounded">{{ $periksa->catatan }}</textarea>
+                    <label for="catatan" class="block text-sm font-medium text-gray-700">Catatan</label>
+                    <textarea name="catatan" id="catatan" class="block w-full mt-1">{{ $periksa->catatan }}</textarea>
                 </div>
 
-                <button type="submit" class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Simpan</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>
             </form>
         </div>
     </div>

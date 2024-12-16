@@ -129,3 +129,5 @@ Route::post('/pasien/poli', [DaftarPoliController::class, 'store'])->name('pasie
 Route::get('/pasien/poli/{id}/edit', [DaftarPoliController::class, 'edit'])->name('pasien.poli.edit');
 Route::post('/pasien/poli/{id}/update', [DaftarPoliController::class, 'update'])->name('pasien.poli.update');
 Route::delete('/pasien/poli/{id}', [DaftarPoliController::class, 'destroy'])->name('pasien.poli.destroy');
+Route::get('pasien/poli/{id}', [DaftarPoliController::class, 'show'])->name('pasien.poli.show');
+
