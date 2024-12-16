@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pasien extends Model
+class Pasien extends Authenticatable
 {
     use HasFactory;
 
@@ -33,4 +34,6 @@ class Pasien extends Model
     {
         return $this->hasMany(DaftarPoli::class, 'id_pasien');
     }
+
+
 }

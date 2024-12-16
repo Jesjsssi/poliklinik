@@ -1076,24 +1076,17 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('auth.login') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('auth.pasien') }}" method="POST" class="space-y-6">
                         @csrf
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" id="email" name="email" required
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
+                            <input type="text" id="nama" name="nama" required
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                         </div>
                         <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" id="password" name="password" required
+                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+                            <input type="text" id="alamat" name="alamat" required
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <label class="flex items-center">
-                                <input type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
-                                <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                            </label>
-                            <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
                         </div>
                         <div>
                             <button type="submit"
@@ -1102,7 +1095,8 @@
                         </div>
                     </form>
                     <p class="text-center text-sm text-gray-600">
-                        Don't have an account? <a href="{{ route('auth.register') }}" class="text-blue-600 hover:underline">Sign up</a>
+                        Don't have an account? <a href="{{ route('auth.register') }}"
+                            class="text-blue-600 hover:underline">Sign up</a>
                     </p>
                 </div>
             </div>

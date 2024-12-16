@@ -39,9 +39,8 @@ Route::get('/doctor', function () {
     return view('doctor');
 });
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
+
+
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
@@ -50,26 +49,29 @@ Route::fallback(function () {
 
 // Authentication
 Route::get('login', [AuthController::class, 'showLogin'])->name('auth.login');
+Route::get('register', [PasienController::class, 'showRegister'])->name('auth.daftar');
+
+Route::post('login/pasien', [PasienController::class, 'loginPasien']);
+Route::get('login/pasien', [PasienController::class, 'showLoginForm'])->name('auth.pasien');
+
+Route::post('register', [PasienController::class, 'register'])->name('auth.register');
 Route::post('login', [AuthController::class, 'login']);
+
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/auth/error', function () { return view('auth.error'); })->name('auth.error');
 Route::get('/403', function () {return view('auth.403'); })->name('auth.403');
 
 
-// Dashboard 
-Route::middleware([AuthenticateAndRedirect::class])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])
-        ->name('admin.dashboard');
 
-    Route::get('/dokter/dashboard', [DokterController::class, 'index'])
-        ->middleware(CheckRole::class . ':dokter')
-        ->name('dokter.dashboard');
+Route::get('/admin/dashboard', [AdminController::class, 'index'])
+    ->name('admin.dashboard');
 
-    Route::get('/pasien/dashboard', [PasienController::class, 'index'])
-        ->middleware(CheckRole::class . ':pasien')
-        ->name('pasien.dashboard');
+Route::get('/dokter/dashboard', [DokterController::class, 'index'])
+    ->name('dokter.dashboard');
 
-});
+Route::get('/pasien/dashboard', [PasienController::class, 'index'])
+    ->name('pasien.dashboard');
+
 
 
 //Admin Dokter

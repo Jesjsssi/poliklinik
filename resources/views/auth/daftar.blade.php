@@ -1062,8 +1062,8 @@
             <!-- Right Section: Login Form -->
             <div class="w-1/2 bg-white flex items-center justify-center p-8">
                 <div class="w-full max-w-md space-y-6">
-                    <h1 class="text-3xl font-bold text-center text-gray-700">Welcome Back</h1>
-                    <p class="text-center text-gray-500">Sign in to your account</p>
+                    <h1 class="text-3xl font-bold text-center text-gray-700">Create an Account</h1>
+                    <p class="text-center text-gray-500">Sign up to get started</p>
 
                     <!-- Display errors if there are any -->
                     @if ($errors->any())
@@ -1076,16 +1076,26 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('auth.login') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('auth.register') }}" method="POST" class="space-y-6">
                         @csrf
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" id="email" name="email" required
+                            <label for="nama" class="block text-sm font-medium text-gray-700">Nama</label>
+                            <input type="text" id="nama" name="nama" required
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                         </div>
                         <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                            <input type="password" id="password" name="password" required
+                            <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+                            <input type="text" id="alamat" name="alamat" required
+                                class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
+                        </div>
+                        <div>
+                            <label for="no_ktp" class="block text-sm font-medium text-gray-700">No KTP</label>
+                            <input type="text" id="no_ktp" name="no_ktp" required
+                                class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
+                        </div>
+                        <div>
+                            <label for="no_hp" class="block text-sm font-medium text-gray-700">No HP</label>
+                            <input type="text" id="no_hp" name="no_hp" required
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                         </div>
                         <div class="flex items-center justify-between">
@@ -1098,11 +1108,11 @@
                         <div>
                             <button type="submit"
                                 class="w-full px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md">Sign
-                                in</button>
+                                Up</button>
                         </div>
                     </form>
                     <p class="text-center text-sm text-gray-600">
-                        Don't have an account? <a href="{{ route('auth.register') }}" class="text-blue-600 hover:underline">Sign up</a>
+                        Already have an account? <a href="{{ route('auth.pasien') }}" class="text-blue-600 hover:underline">Log in</a>
                     </p>
                 </div>
             </div>

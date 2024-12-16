@@ -11,9 +11,8 @@
 
 <body class="bg-white text-black">
 
+
     <div class="flex">
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <div class="flex justify-between items-center mb-4">
@@ -51,15 +50,18 @@
 
                         <div class="mb-4">
                             <label for="keluhan" class="block">Keluhan</label>
-                            <textarea name="keluhan" id="keluhan" class="w-full p-2 border border-gray-300" rows="3" required></textarea>
+                            <textarea name="keluhan" id="keluhan" class="w-full p-2 border border-gray-300" rows="3"
+                                required></textarea>
                         </div>
 
                         <div class="mb-4">
                             <label for="no_antrian" class="block">No Antrian</label>
-                            <input type="number" name="no_antrian" id="no_antrian" class="w-full p-2 border border-gray-300" required>
+                            <input type="number" name="no_antrian" id="no_antrian"
+                                class="w-full p-2 border border-gray-300" required>
                         </div>
 
-                        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Simpan</button>
                     </form>
                 </div>
 
@@ -83,7 +85,8 @@
                                     <tr class="hover:bg-gray-100">
                                         <td class="px-4 py-2 border border-gray-300">{{ $loop->iteration }}</td>
                                         <td class="px-4 py-2 border border-gray-300">{{ $daftarPoli->pasien->nama }}</td>
-                                        <td class="px-4 py-2 border border-gray-300">{{ $daftarPoli->jadwal->tgl_periksa }}</td>
+                                        <td class="px-4 py-2 border border-gray-300">{{ $daftarPoli->jadwal->tgl_periksa }}
+                                        </td>
                                         <td class="px-4 py-2 border border-gray-300">{{ $daftarPoli->keluhan }}</td>
                                         <td class="px-4 py-2 border border-gray-300">{{ $daftarPoli->no_antrian }}</td>
                                     </tr>
