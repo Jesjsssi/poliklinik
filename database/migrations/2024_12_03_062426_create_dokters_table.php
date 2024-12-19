@@ -14,6 +14,7 @@ class CreateDoktersTable extends Migration
             $table->string('alamat', 255);
             $table->string('no_hp', 50);
             $table->foreignId('id_poli')->constrained('polis')->onDelete('cascade');
+            $table->string('password'); // Add password column
             $table->timestamps();
         });
     }

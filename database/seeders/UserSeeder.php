@@ -10,34 +10,13 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        // Buat pengguna dengan peran admin
-        User::updateOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-            ]
-        );
-
-        // Buat pengguna dengan peran dokter
-        User::updateOrCreate(
-            ['email' => 'dokter@example.com'],
-            [
-                'name' => 'Dokter User',
-                'password' => Hash::make('password'),
-                'role' => 'dokter',
-            ]
-        );
-
-        // Buat pengguna dengan peran pasien
-        User::updateOrCreate(
-            ['email' => 'pasien@example.com'],
-            [
-                'name' => 'Pasien User',
-                'password' => Hash::make('password'),
-                'role' => 'pasien',
-            ]
-        );
+        // Create an admin user with only name and password
+        User::create([
+            'name' => 'admin',
+            'password' => Hash::make('password'),  // Password should be hashed
+            'role' => 'admin',  // Set the role (if needed)
+        ]);
     }
 }
+
+

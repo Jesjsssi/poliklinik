@@ -1076,11 +1076,11 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('auth.login') }}" method="POST" class="space-y-6">
+                    <form action="{{ route('auth.dokter') }}" method="POST" class="space-y-6">
                         @csrf
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-700">Nama</label>
-                            <input type="text" id="name" name="name" required
+                            <input type="text" id="name" name="nama" required
                                 class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:ring focus:ring-blue-300">
                         </div>
                         <div>
@@ -1104,8 +1104,10 @@
 
 
 
+
                     <p class="text-center text-sm text-gray-600">
-                        Don't have an account? <a href="{{ route('auth.register') }}" class="text-blue-600 hover:underline">Sign up</a>
+                        Don't have an account? <a href="{{ route('auth.register') }}"
+                            class="text-blue-600 hover:underline">Sign up</a>
                     </p>
                 </div>
             </div>

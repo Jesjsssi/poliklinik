@@ -10,10 +10,9 @@
 </head>
 
 <body class="bg-gray-50 text-gray-900">
+    @extends('layouts.dokter_layout')
 
     <div class="flex">
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <h1 class="text-2xl font-bold mb-4">Tambah Periksa</h1>

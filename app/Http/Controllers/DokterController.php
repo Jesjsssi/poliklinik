@@ -9,18 +9,51 @@ use App\Models\Dokter;
 use App\Models\Periksa;
 use App\Models\DaftarPoli;
 use App\Models\Poli;
+use Illuminate\Support\Facades\Hash;
+
 
 class DokterController extends Controller
 {
-    public function index()
+    public function showLoginForm()
     {
-        // Memeriksa apakah pengguna yang login adalah dokter
-        if (Auth::check() && Auth::user()->role == 'dokter') {
-            return view('dokter.dashboard'); // Tampilkan halaman dashboard dokter
+        return view('auth.dokter'); // Ensure you have this view
+    }
+
+    public function loginDokter(Request $request)
+    {
+        // Validate the input
+        $request->validate([
+            'nama' => 'required|string|max:255', // Validate nama
+            'password' => 'required|string|min:6', // Validate password
+        ]);
+
+        // Find dokter by nama
+        $dokter = Dokter::where('nama', $request->nama)->first();
+
+        // Check if dokter exists and if password matches
+        if ($dokter && Hash::check($request->password, $dokter->password)) {
+            // Store dokter ID in session
+            session(['dokter_id' => $dokter->id]);
+
+            // Redirect to dokter dashboard
+            return redirect()->route('dokter.dashboard')->with('success', 'Login berhasil!');
         }
 
-        // Jika bukan dokter, arahkan ke halaman yang sesuai atau login
-        return redirect()->route('auth.login');
+        // If credentials are invalid, return with error
+        return back()->with('error', 'Nama atau password tidak cocok.');
+    }
+
+    public function index()
+    {
+        $dokter = Dokter::find(session('dokter_id'));
+
+        // If dokter is found in session, show dashboard
+        if ($dokter) {
+            return view('dokter.dashboard', compact('dokter'));
+        }
+
+        // If dokter not found in session, redirect to login
+        return redirect()->route('auth.dokter');
     }
 
     // Menampilkan jadwal periksa
@@ -151,4 +184,77 @@ class DokterController extends Controller
 
         return redirect()->route('dokter.periksa.index');
     }
+
+    //Dokter Profil
+    public function dokterProfil()
+    {
+        // Assuming the logged-in user is the doctor whose profile we're displaying
+        $dokter = auth()->user();
+        return view('dokter.profil.index', compact('dokter'));
+    }
+
+    // Store doctor profile (when creating a new doctor)
+    public function storeDokter(Request $request)
+    {
+        $dokter = Dokter::find($request->id);
+
+        if ($dokter) {
+            // Jika dokter sudah ada, lakukan update
+            $dokter->update([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+                'id_poli' => $request->id_poli,
+            ]);
+            return redirect()->route('dokter.profil.index', ['id' => $dokter->id])
+                ->with('success', 'Dokter berhasil diperbarui.');
+        } else {
+            // Jika dokter tidak ada, buat dokter baru
+            Dokter::create($request->all());
+            return redirect()->route('dokter.profil.index')
+                ->with('success', 'Dokter berhasil dibuat.');
+        }
+    }
+
+
+
+    // Edit doctor profile
+    public function editDokter($id)
+    {
+        $dokter = Dokter::findOrFail($id);
+        return view('dokter.profil.edit', compact('dokter'));
+    }
+
+    // Update doctor profile
+    public function updateDokter(Request $request, $id)
+    {
+        // Menemukan data dokter berdasarkan ID
+        $dokter = Dokter::findOrFail($id);
+        $dokter->update($request->all());
+
+        // Validasi input
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string|max:15',
+            'id_poli' => 'required|exists:polis,id', // Validasi untuk id_poli
+        ]);
+
+        // Jika validasi gagal, form akan kembali dengan error messages.
+
+        // Update data dokter
+        $dokter->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp,
+            'id_poli' => $request->id_poli,  // Pastikan id_poli sudah diambil dari input
+        ]);
+
+        // Redirect ke halaman daftar dokter dengan pesan sukses
+        return redirect()->route('dokter.profil.index', ['id' => $dokter->id])
+            ->with('success', 'Dokter berhasil diperbarui.');
+
+    }
+
+
 }

@@ -10,10 +10,8 @@
 </head>
 
 <body class="bg-white text-black">
-
+@extends('layouts.dokter_layout')
     <div class="flex">
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <h1 class="text-2xl font-bold mb-6">Tambah Jadwal Dokter</h1>

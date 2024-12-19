@@ -51,8 +51,13 @@ Route::fallback(function () {
 Route::get('login', [AuthController::class, 'showLogin'])->name('auth.login');
 Route::get('register', [PasienController::class, 'showRegister'])->name('auth.daftar');
 
+//pasien
 Route::post('login/pasien', [PasienController::class, 'loginPasien']);
 Route::get('login/pasien', [PasienController::class, 'showLoginForm'])->name('auth.pasien');
+
+//dokter
+Route::post('login/dokter', [DokterController::class, 'loginDokter']);
+Route::get('login/dokter', [DokterController::class, 'showLoginForm'])->name('auth.dokter');
 
 Route::post('register', [PasienController::class, 'register'])->name('auth.register');
 Route::post('login', [AuthController::class, 'login']);
@@ -121,6 +126,12 @@ Route::post('/dokter/periksa', [DokterController::class, 'storePeriksa'])->name(
 Route::get('/dokter/periksa/{id}/edit', [DokterController::class, 'editPeriksa'])->name('dokter.periksa.edit');
 Route::post('/dokter/periksa/{id}/update', [DokterController::class, 'updatePeriksa'])->name('dokter.periksa.update');
 Route::delete('/dokter/periksa/{id}', [DokterController::class, 'deletePeriksa'])->name('dokter.periksa.destroy');
+
+//Dokter Profil
+Route::get('/dokter/profil', [DokterController::class, 'dokterProfil'])->name('dokter.profil.index');
+Route::post('/dokter/profil', [DokterController::class, 'storeDokter'])->name('dokter.profil.store');
+Route::get('/dokter/profil/{id}/edit', [DokterController::class, 'editDokter'])->name('dokter.profil.edit');
+Route::post('/dokter/profil/{id}/update', [DokterController::class, 'updateDokter'])->name('dokter.profil.update');
 
 //Pasien Poli
 Route::get('/pasien/poli', [DaftarPoliController::class, 'index'])->name('pasien.poli.index');

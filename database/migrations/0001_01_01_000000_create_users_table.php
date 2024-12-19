@@ -11,29 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Create users table with name, password, and role columns
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
+            $table->string('name');  // Store user name
+            $table->string('password');  // Store hashed password
+            $table->string('role');  // Store user role (e.g., admin, dokter)
+            $table->rememberToken();  // Store remember me token
+            $table->timestamps();  // Store created_at and updated_at
         });
     }
 
@@ -42,8 +27,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Drop the users table
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };

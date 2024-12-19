@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Dokter;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-
     public function showLogin()
     {
         return view('auth.login');
@@ -16,37 +17,29 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi input
+        // Validate input
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:6',
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
         ]);
 
-        // Attempt login
-        if (Auth::attempt($request->only('email', 'password'))) {
-            // Login berhasil, cek role pengguna
-            $user = Auth::user();
-
-            // Mengarahkan berdasarkan role
-            if ($user->role == 'admin') {
-                return redirect()->route('admin.dashboard'); // Halaman dashboard admin
-            } elseif ($user->role == 'dokter') {
-                return redirect()->route('dokter.dashboard'); // Halaman dashboard dokter
-            }
-
-            // Jika role tidak dikenali, arahkan ke halaman umum atau lainnya
-            return redirect()->route('home'); // Halaman umum, misalnya untuk pasien atau halaman lain
+        // Check if the user is an admin
+        $user = User::where('name', $request->name)->first();  // Check in 'users' table for 'admin'
+        if ($user && $user->role == 'admin' && Hash::check($request->password, $user->password)) {
+            Auth::login($user); // Log in the admin
+            return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
         }
 
-        // Cek apakah email ada di database
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-            // Email ada, berarti password salah
-            return redirect()->route('auth.error')->with('error', 'Password salah. Silakan coba lagi.');
-        } else {
-            // Email tidak ditemukan
-            return redirect()->route('auth.error')->with('error', 'Email tidak ditemukan. Silakan coba lagi.');
+        // Check if the user is a dokter
+        $dokter = Dokter::where('nama', $request->name)->first();  // Check in 'dokters' table for 'dokter'
+        if ($dokter && Hash::check($request->password, $dokter->password)) {
+            Auth::login($dokter); // Log in the dokter
+            return redirect()->route('dokter.dashboard'); // Redirect to dokter dashboard
         }
+
+        // If authentication fails, return with error message
+        return back()->withErrors(['message' => 'Invalid credentials.']);
     }
+
 
 }

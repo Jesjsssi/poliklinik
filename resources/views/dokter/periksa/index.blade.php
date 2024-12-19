@@ -10,10 +10,10 @@
 </head>
 
 <body class="bg-gray-50 text-gray-900">
+    @extends('layouts.dokter_layout')
 
     <div class="flex">
-        <!-- Sidebar -->
-        <x-sidebar></x-sidebar>
+
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <div class="flex justify-between items-center mb-4">
