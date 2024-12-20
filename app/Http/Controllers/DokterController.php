@@ -71,17 +71,32 @@ class DokterController extends Controller
 
     public function storeJadwal(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'id_dokter' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
         ]);
 
-        JadwalPeriksa::create($request->all());
+        // Ambil dokter yang sedang login
+        $dokter = Dokter::find(session('dokter_id'));
 
-        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal Dokter berhasil ditambahkan.');
+        // Pastikan dokter ditemukan
+        if (!$dokter) {
+            return redirect()->route('dokter.jadwal.index')->with('error', 'Anda tidak memiliki akses.');
+        }
+
+        // Simpan jadwal dengan dokter yang sedang login
+        JadwalPeriksa::create([
+            'id_dokter' => $dokter->id,
+            'hari' => $request->hari,
+            'jam_mulai' => $request->jam_mulai,
+            'jam_selesai' => $request->jam_selesai,
+        ]);
+
+        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal berhasil ditambahkan.');
     }
+
 
     public function editJadwal($id)
     {
@@ -92,18 +107,37 @@ class DokterController extends Controller
 
     public function updateJadwal(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
-            'id_dokter' => 'required',
             'hari' => 'required',
             'jam_mulai' => 'required',
             'jam_selesai' => 'required',
         ]);
 
-        $jadwal = JadwalPeriksa::findOrFail($id);
-        $jadwal->update($request->all());
+        // Ambil data dokter yang sedang login
+        $dokter = Dokter::find(session('dokter_id'));
 
-        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal Dokter berhasil diperbarui.');
+        if (!$dokter) {
+            return redirect()->route('dokter.jadwal.index')->with('error', 'Anda tidak memiliki akses.');
+        }
+
+        // Cari jadwal berdasarkan ID dan pastikan jadwal milik dokter yang login
+        $jadwal = JadwalPeriksa::where('id', $id)->where('id_dokter', $dokter->id)->first();
+
+        if (!$jadwal) {
+            return redirect()->route('dokter.jadwal.index')->with('error', 'Jadwal tidak ditemukan atau Anda tidak berhak mengubahnya.');
+        }
+
+        // Update data jadwal
+        $jadwal->update([
+            'hari' => $request->hari,
+            'jam_mulai' => $request->jam_mulai,
+            'jam_selesai' => $request->jam_selesai,
+        ]);
+
+        return redirect()->route('dokter.jadwal.index')->with('success', 'Jadwal berhasil diperbarui.');
     }
+
 
     public function deleteJadwal($id)
     {
@@ -255,6 +289,25 @@ class DokterController extends Controller
             ->with('success', 'Dokter berhasil diperbarui.');
 
     }
+
+    public function updateStatus($id)
+    {
+        // Ambil jadwal berdasarkan ID
+        $jadwal = JadwalPeriksa::findOrFail($id);
+
+        // Cek apakah jadwal milik dokter yang sedang login
+        $dokter = Dokter::find(session('dokter_id'));
+        if (!$dokter || $jadwal->id_dokter != $dokter->id) {
+            return redirect()->route('dokter.jadwal.index')->with('error', 'Anda tidak memiliki akses untuk mengubah status jadwal ini.');
+        }
+
+        // Toggle status antara 'aktif' dan 'tidak_aktif'
+        $jadwal->status = ($jadwal->status == 'aktif') ? 'tidak_aktif' : 'aktif';
+        $jadwal->save();
+
+        return redirect()->route('dokter.jadwal.index')->with('success', 'Status jadwal berhasil diperbarui.');
+    }
+
 
 
 }

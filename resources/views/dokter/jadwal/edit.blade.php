@@ -21,16 +21,7 @@
                 @csrf
                 @method('POST')
 
-                <div class="mb-4">
-                    <label for="id_dokter" class="block mb-2">Dokter</label>
-                    <select name="id_dokter" id="id_dokter" class="w-full px-4 py-2 border rounded">
-                        @foreach($dokters as $dokter)
-                            <option value="{{ $dokter->id }}" {{ $jadwalPeriksa->id_dokter == $dokter->id ? 'selected' : '' }}>
-                                {{ $dokter->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                
 
                 <div class="mb-4">
                     <label for="hari" class="block mb-2">Hari</label>

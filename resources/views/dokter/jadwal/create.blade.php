@@ -16,21 +16,16 @@
         <div class="flex-1 p-6 ml-64 mt-12">
             <h1 class="text-2xl font-bold mb-6">Tambah Jadwal Dokter</h1>
 
-            <form action="{{ route('dokter.jadwal.store') }}" method="POST">
+            <form action="{{ route('dokter.jadwal.store') }}" method="POST" class="space-y-4">
                 @csrf
-
-                <div class="mb-4">
-                    <label for="id_dokter" class="block mb-2">Dokter</label>
-                    <select name="id_dokter" id="id_dokter" class="w-full px-4 py-2 border rounded">
-                        @foreach($dokters as $dokter)
-                            <option value="{{ $dokter->id }}">{{ $dokter->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="mb-4">
-                    <label for="hari" class="block mb-2">Hari</label>
-                    <select name="hari" id="hari" class="w-full px-4 py-2 border rounded">
+            
+            
+            
+                <!-- Hari -->
+                <div>
+                    <label for="hari" class="block text-sm font-medium mb-1">Hari</label>
+                    <select name="hari" id="hari"
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:ring focus:ring-blue-300">
                         <option>Senin</option>
                         <option>Selasa</option>
                         <option>Rabu</option>
@@ -40,18 +35,28 @@
                         <option>Minggu</option>
                     </select>
                 </div>
-
-                <div class="mb-4">
-                    <label for="jam_mulai" class="block mb-2">Jam Mulai</label>
-                    <input type="time" name="jam_mulai" id="jam_mulai" class="w-full px-4 py-2 border rounded">
+            
+                <!-- Jam Mulai -->
+                <div>
+                    <label for="jam_mulai" class="block text-sm font-medium mb-1">Jam Mulai</label>
+                    <input type="time" name="jam_mulai" id="jam_mulai"
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:ring focus:ring-blue-300">
                 </div>
-
-                <div class="mb-4">
-                    <label for="jam_selesai" class="block mb-2">Jam Selesai</label>
-                    <input type="time" name="jam_selesai" id="jam_selesai" class="w-full px-4 py-2 border rounded">
+            
+                <!-- Jam Selesai -->
+                <div>
+                    <label for="jam_selesai" class="block text-sm font-medium mb-1">Jam Selesai</label>
+                    <input type="time" name="jam_selesai" id="jam_selesai"
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:ring focus:ring-blue-300">
                 </div>
-
-                <button type="submit" class="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-700">Simpan</button>
+            
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit"
+                        class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 focus:ring focus:ring-blue-300">
+                        Simpan
+                    </button>
+                </div>
             </form>
         </div>
     </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pasien;
 use Illuminate\Http\Request;
+use App\Models\JadwalPeriksa;
+use App\Models\Poli;
 use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
@@ -16,8 +18,13 @@ class PasienController extends Controller
 
     public function create()
     {
-        // Tampilkan halaman form untuk menambahkan pasien baru
-        return view('pasien.create');
+        // Ambil jadwal yang aktif
+        $jadwals = JadwalPeriksa::active()->get(); // Hanya jadwal yang aktif
+        // Ambil data poli
+        $polis = Poli::all();
+
+        // Tampilkan halaman form untuk menambahkan pasien baru, termasuk jadwal aktif dan poli
+        return view('pasien.create', compact('jadwals', 'polis'));
     }
 
     public function store(Request $request)
@@ -51,6 +58,7 @@ class PasienController extends Controller
 
         return redirect()->route('pasien.index')->with('success', 'Pasien berhasil ditambahkan dengan nomor rekam medis: ' . $newNoRm);
     }
+
 
 
     public function edit($id)

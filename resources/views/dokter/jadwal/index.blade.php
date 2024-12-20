@@ -13,7 +13,7 @@
     @extends('layouts.dokter_layout')
 
     <div class="flex">
-        
+
 
         <div class="flex-1 p-6 ml-64 mt-12">
             <div class="flex justify-between items-center mb-4">
@@ -39,6 +39,7 @@
                             <th class="px-4 py-2 text-left">Hari</th>
                             <th class="px-4 py-2 text-left">Jam Mulai</th>
                             <th class="px-4 py-2 text-left">Jam Selesai</th>
+                            <th class="px-4 py-2 text-left">Status</th>
                             <th class="px-4 py-2 text-left">Aksi</th>
                         </tr>
                     </thead>
@@ -50,21 +51,29 @@
                                 <td class="px-4 py-2">{{ $jadwal->hari }}</td>
                                 <td class="px-4 py-2">{{ $jadwal->jam_mulai }}</td>
                                 <td class="px-4 py-2">{{ $jadwal->jam_selesai }}</td>
+                                <td class="px-4 py-2">
+                                    <span
+                                        class="px-4 py-2 text-white {{ $jadwal->status == 'aktif' ? 'bg-green-500' : 'bg-red-500' }}">
+                                        {{ ucfirst($jadwal->status) }}
+                                    </span>
+                                </td>
                                 <td class="px-4 py-2 flex gap-2">
                                     <a href="{{ route('dokter.jadwal.edit', $jadwal->id) }}"
                                         class="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700">Edit</a>
-                                    <form action="{{ route('dokter.jadwal.destroy', $jadwal->id) }}" method="POST"
-                                        style="display:inline;">
+                                    <form action="{{ route('dokter.jadwal.update-status', $jadwal->id) }}" method="POST"
+                                        class="inline-block">
                                         @csrf
-                                        @method('DELETE')
+                                        @method('PATCH')
                                         <button type="submit"
-                                            class="bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700"
-                                            onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                            class="bg-yellow-600 px-3 py-1 rounded text-white hover:bg-yellow-700">
+                                            Ubah Status
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
+
                 </table>
             </div>
         </div>

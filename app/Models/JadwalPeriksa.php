@@ -11,15 +11,23 @@ class JadwalPeriksa extends Model
 
     protected $table = 'jadwal_periksas'; // Pastikan nama tabel sesuai dengan migrasi
     protected $fillable = [
+        'id_dokter',
         'hari',
         'jam_mulai',
         'jam_selesai',
-        'id_dokter',
+        'is_active'
     ];
 
+    // Relasi ke model Dokter
     public function dokter()
     {
-        return $this->belongsTo(Dokter::class, 'id_dokter', 'id');
+        return $this->belongsTo(Dokter::class, 'id_dokter');
+    }
+
+    // Menambahkan scope untuk hanya mengambil jadwal aktif
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 
     public function poli()

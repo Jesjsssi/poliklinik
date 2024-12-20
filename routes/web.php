@@ -118,6 +118,8 @@ Route::post('/dokter/jadwal', [DokterController::class, 'storeJadwal'])->name('d
 Route::get('/dokter/jadwal/{id}/edit', [DokterController::class, 'editJadwal'])->name('dokter.jadwal.edit');
 Route::post('/dokter/jadwal/{id}/update', [DokterController::class, 'updateJadwal'])->name('dokter.jadwal.update');
 Route::delete('/dokter/jadwal/{id}', [DokterController::class, 'deleteJadwal'])->name('dokter.jadwal.destroy');
+Route::patch('/dokter/jadwal/{id}/status', [DokterController::class, 'updateStatus'])->name('dokter.jadwal.update-status');
+
 
 //Dokter Periksa
 Route::get('/dokter/periksa', [DokterController::class, 'periksaIndex'])->name('dokter.periksa.index');
