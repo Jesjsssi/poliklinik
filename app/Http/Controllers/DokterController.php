@@ -10,6 +10,7 @@ use App\Models\Periksa;
 use App\Models\DaftarPoli;
 use App\Models\Poli;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Obat;
 
 
 class DokterController extends Controller
@@ -149,19 +150,19 @@ class DokterController extends Controller
 
     public function periksaIndex()
     {
-        $periksas = Periksa::with('daftarPoli.poli')->get(); // Eager load relasi
-
-        return view('dokter.periksa.index', compact('periksas'));
+        $daftarPolis = DaftarPoli::with(['pasien', 'poli'])->get(); // Mendapatkan data daftar poli
+        return view('dokter.periksa.index', compact('daftarPolis')); // Passing data ke view
     }
 
     // Menampilkan form untuk membuat periksa baru
-    public function createPeriksa()
+    public function createPeriksa($id)
     {
-        $polis = Poli::all(); // Ambil data poli
-        return view('dokter.periksa.create', compact('polis'));
+        $daftarPoli = DaftarPoli::with(['pasien'])->findOrFail($id); // Ambil data daftar poli berdasarkan ID
+        $obats = Obat::all(); // Ambil semua data obat
+        return view('dokter.periksa.create', compact('daftarPoli', 'obats'));
     }
 
-    // Menyimpan periksa yang baru dibuat
+
     public function storePeriksa(Request $request)
     {
         $request->validate([
@@ -169,17 +170,31 @@ class DokterController extends Controller
             'tgl_periksa' => 'required|date',
             'biaya_periksa' => 'required|numeric',
             'catatan' => 'nullable|string',
+            'obat' => 'array',
+            'obat.*' => 'exists:obats,id',
         ]);
 
-        Periksa::create([
+        $totalObatHarga = Obat::whereIn('id', $request->obat)->sum('harga');
+        $totalHarga = $totalObatHarga + $request->biaya_periksa;
+
+        $periksa = Periksa::create([
             'id_daftar_poli' => $request->id_daftar_poli,
             'tgl_periksa' => $request->tgl_periksa,
             'biaya_periksa' => $request->biaya_periksa,
             'catatan' => $request->catatan,
+            'total_harga' => $totalHarga,
         ]);
 
-        return redirect()->route('dokter.periksa.index');
+        // Simpan obat yang dipilih (jika ada relasi many-to-many)
+        if ($request->has('obat')) {
+            $periksa->obats()->sync($request->obat);
+        }
+
+        return redirect()->route('dokter.periksa.index')->with('success', 'Data pemeriksaan berhasil disimpan!');
     }
+
+
+
 
     // Menampilkan form untuk mengedit data periksa
     public function editPeriksa($id)

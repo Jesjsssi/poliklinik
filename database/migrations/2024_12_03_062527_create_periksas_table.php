@@ -14,6 +14,7 @@ class CreatePeriksasTable extends Migration
             $table->datetime('tgl_periksa');
             $table->text('catatan')->nullable();
             $table->integer('biaya_periksa');
+            $table->integer('total_harga');
             $table->timestamps();
         });
     }

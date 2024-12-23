@@ -123,7 +123,8 @@ Route::patch('/dokter/jadwal/{id}/status', [DokterController::class, 'updateStat
 
 //Dokter Periksa
 Route::get('/dokter/periksa', [DokterController::class, 'periksaIndex'])->name('dokter.periksa.index');
-Route::get('/dokter/periksa/create', [DokterController::class, 'createPeriksa'])->name('dokter.periksa.create');
+Route::get('/dokter/periksa/create/{id}', [DokterController::class, 'createPeriksa'])->name('dokter.periksa.create');
+
 Route::post('/dokter/periksa', [DokterController::class, 'storePeriksa'])->name('dokter.periksa.store');
 Route::get('/dokter/periksa/{id}/edit', [DokterController::class, 'editPeriksa'])->name('dokter.periksa.edit');
 Route::post('/dokter/periksa/{id}/update', [DokterController::class, 'updatePeriksa'])->name('dokter.periksa.update');
